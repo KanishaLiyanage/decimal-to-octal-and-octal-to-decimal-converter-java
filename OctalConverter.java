@@ -1,0 +1,146 @@
+package Assignment01;
+
+import java.util.Scanner;
+import java.lang.Math;
+
+public class OctalConverter {
+
+    static void decimToOctal(int number) {
+
+        int[] octalArray = new int[50];
+        int index = 0;
+
+        while (number > 0) {
+            octalArray[index++] = number % 8;
+            number = number / 8;
+        }
+
+        for (int i = index - 1; i >= 0; i--) {
+
+            System.out.print(octalArray[i]);
+
+        }
+
+    }
+
+    static void floatingPointDecimToOctal(double number) {
+
+        int pointCount = 0;
+        while (pointCount < 10) {
+            number = number * 8;
+            int x = (int) number;
+            System.out.print(x);
+            number = number - (double) x;
+            pointCount++;
+        }
+
+    }
+
+    static int octaltoDecim(int number) {
+
+        int sum = 0;
+        int power = 0;
+
+        while (number > 0) {
+            int x = number % 10;
+            number = number / 10;
+            sum = (int) (sum + (x * Math.pow(8, power)));
+            power++;
+        }
+        return sum;
+
+    }
+
+    static double floatingPointOctaltoDecim(double number) {
+
+        double sum = 0;
+        int power = -1;
+
+        String str1 = String.valueOf(number);
+        int index = str1.indexOf(".");
+        int NumberofDecimalPoints = str1.substring(index + 1).length();
+
+        number = number * Math.pow(10, NumberofDecimalPoints);
+        int newNumber = (int) number;
+        String temp = Integer.toString(newNumber);
+        int[] numbers = new int[temp.length()];
+
+        for (int i = 0; i < temp.length(); i++) {
+            numbers[i] = temp.charAt(i) - '0';
+            sum = (sum + (numbers[i] * Math.pow(8, power)));
+            power--;
+        }
+        return sum;
+
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println("Choose your conversion type");
+        System.out.println("********************************************************\n"
+                + "* Press 1 to Convert Decimal to Octal \n"
+                + "* Press 2 to Convert floating point Decimal to Octal \n"
+                + "* Press 3 to Convert Octal to Decimal \n"
+                + "* Press 4 to Convert floating point Octal to Decimal \n"
+                + "********************************************************\n");
+
+        Scanner scan = new Scanner(System.in);
+        int x = scan.nextInt();
+
+        switch (x) {
+
+            case 1:
+                System.out.print("Enter a decimal number: ");
+                Scanner scan1 = new Scanner(System.in);
+                int number1 = scan1.nextInt();
+                decimToOctal(number1);
+                System.out.println();
+                break;
+            case 2:
+                System.out.print("Enter a floating point Decimal number: ");
+                Scanner scan2 = new Scanner(System.in);
+                double number2 = scan2.nextDouble();
+
+                int integerPart = (int) number2;
+                String str = String.valueOf(number2);
+                int index = str.indexOf(".");
+                int NumberofDecimalPoints = str.substring(index + 1).length();
+                double decimalPart = number2 - integerPart;
+                String roundOffasString = String.format("%." + NumberofDecimalPoints + "f", decimalPart); //decimal part roundoff as String
+                decimalPart = Double.parseDouble(roundOffasString);
+                decimToOctal(integerPart);
+                System.out.print(".");
+                floatingPointDecimToOctal(decimalPart);
+                System.out.println();
+
+                break;
+            case 3:
+                System.out.print("Enter a octal number: ");
+                Scanner scan3 = new Scanner(System.in);
+                int number3 = scan3.nextInt();
+                System.out.println(octaltoDecim(number3));
+                break;
+            case 4:
+                System.out.print("Enter a floating point octal number: ");
+                Scanner scan4 = new Scanner(System.in);
+                double number4 = scan4.nextDouble();
+
+                int integerPart1 = (int) number4;
+                String str1 = String.valueOf(number4);
+                //System.out.println(str);
+                int index1 = str1.indexOf(".");
+                int NumberofDecimalPoints1 = str1.substring(index1 + 1).length();
+                double decimalPart1 = number4 - integerPart1;
+                String roundOffasString1 = String.format("%." + NumberofDecimalPoints1 + "f", decimalPart1);
+                decimalPart1 = Double.parseDouble(roundOffasString1);
+                System.out.println(octaltoDecim(integerPart1) + floatingPointOctaltoDecim(decimalPart1));
+
+                break;
+            default:
+                System.out.println("Invalid input!");
+
+        }
+
+    }
+
+}
